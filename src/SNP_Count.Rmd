@@ -1,0 +1,205 @@
+---
+title: "SNP Count"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library("dplyr")
+library("ggplot2")
+library("RColorBrewer")
+library("reshape2")
+library("plotly")
+```
+
+## SNP Count for 8 different populations
+```{r count_plot, warning=FALSE,echo=FALSE, fig.height=8, fig.width=11}
+count_file <- read.csv("SNP_count_pooled_samples.txt", sep = "\t", header = FALSE)
+colnames(count_file) <- c("Population","Count")
+options(scipen=999)
+bar_graph <- ggplot(data = count_file, aes(x=Population,y=Count,fill = Population))+
+  geom_bar(stat="identity")+
+  geom_text(label = count_file$Count, size=4)+
+  xlab("Population")+
+  ylab("Number of SNPs")+
+  scale_fill_brewer(palette="Dark2")+
+  theme_minimal()
+ggplotly(bar_graph)
+```
+
+## Stacked bar graph of the number of snps across populations in each chromosome.
+```{r window_plot, warning=FALSE,echo=FALSE, fig.height=8, fig.width=11}
+window_file <- read.csv("window_count.txt", sep = "\t", header = FALSE)
+colnames(window_file) <- c("Population","Chromosome","Window","Count")
+options(scipen=999)
+bar_graph_window <- ggplot(data = window_file, aes(x=Chromosome,y=Count,fill = Population))+
+  geom_bar(stat="identity")+
+  xlab("Chromosome")+
+  ylab("Number of SNPs")+
+  scale_fill_brewer(palette="Dark2")+
+  theme_minimal()
+ggplotly(bar_graph_window)
+```
+
+## Clustered bar graph of the number of snps across populations in each chromosome (Same plot as before but easier to compare between population).
+
+```{r chromosome_comparison_plot, warning=FALSE,echo=FALSE, fig.height=8, fig.width=11}
+chromosome_comparison_plot <- ggplot(data = window_file, aes(x=Chromosome,y=Count,fill = Population))+
+  geom_bar(position="dodge",stat="identity")+
+  xlab("Chromosome")+
+  ylab("Number of SNPs")+
+  scale_fill_brewer(palette="Dark2")+
+  theme_minimal()
+ggplotly(chromosome_comparison_plot)
+```
+
+## Line Graph representing the number of SNPs in 100kB window: 
+
+### Chromosome X:
+
+```{r X_chromosome , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+X_chromosome <- ggplot(data = window_file[window_file$Chromosome==" ChLGX ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome X")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,9000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(X_chromosome)
+
+```
+
+### Chromosome 2:
+
+```{r Chromosome_two , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_two <- ggplot(data = window_file[window_file$Chromosome==" ChLG2 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 2")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,16000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_two)
+
+```
+
+### Chromosome 3:
+
+```{r Chromosome_three , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_three <- ggplot(data = window_file[window_file$Chromosome==" ChLG3 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 3")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,32000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_three)
+
+```
+
+### Chromosome 4:
+
+```{r Chromosome_four , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_four <- ggplot(data = window_file[window_file$Chromosome==" ChLG4 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 4")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,13000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_four)
+
+```
+
+### Chromosome 5:
+
+```{r Chromosome_five , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_five <- ggplot(data = window_file[window_file$Chromosome==" ChLG5 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 5")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,16000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_five)
+
+```
+
+### Chromosome 6:
+
+```{r Chromosome_six , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_six <- ggplot(data = window_file[window_file$Chromosome==" ChLG6 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 6")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,11000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_six)
+
+```
+
+### Chromosome 7:
+
+```{r Chromosome_seven , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_seven <- ggplot(data = window_file[window_file$Chromosome==" ChLG7 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 7")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,17000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_seven)
+
+```
+
+### Chromosome 8:
+
+```{r Chromosome_eight , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_eight <- ggplot(data = window_file[window_file$Chromosome==" ChLG8 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 8")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,15000000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_eight)
+
+```
+
+### Chromosome 9:
+
+```{r Chromosome_nine , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_nine <- ggplot(data = window_file[window_file$Chromosome==" ChLG9 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 9")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,16500000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_nine)
+
+```
+
+### Chromosome 10:
+
+```{r Chromosome_ten , warning=FALSE,echo=FALSE, fig.height=11, fig.width=16}
+Chromosome_ten <- ggplot(data = window_file[window_file$Chromosome==" ChLG10 ",], aes(x=Window,y=Count,color = Population))+
+  geom_line(stat="identity")+
+  xlab("100kb window")+
+  ylab("Count")+
+  ggtitle("Chromosome 10")+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,7300000,100000))+
+  theme(axis.text.x = element_blank())
+ggplotly(Chromosome_ten)
+
+```
